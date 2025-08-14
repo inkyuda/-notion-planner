@@ -1,0 +1,26 @@
+{
+  "name": "notion-planner-netlify",
+  "version": "1.0.0",
+  "description": "노션 연동 계획표 - Netlify Functions 기반",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build process needed'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.10.1"
+  },
+  "keywords": [
+    "notion",
+    "planner",
+    "netlify",
+    "functions",
+    "serverless"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
