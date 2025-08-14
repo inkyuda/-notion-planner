@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>노션 연동 계획표</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-title .icon {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-label .icon {
+            margin-right: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn .icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .refresh-btn {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .events-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .event-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .event-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .event-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #2d3748;
+            margin-bottom: 0.8rem;
+        }
+        
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .event-detail {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+        
+        .event-detail .icon {
+            margin-right: 0.8rem;
+            font-size: 1.1rem;
+            width: 20px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #718096;
+        }
+        
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 3rem;
+            color: #4a5568;
+        }
+        
+        .message {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            max-width: 400px;
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            font-weight: 500;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .message.success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+        
+        .message.error {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+        }
+        
+        .message.info {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+        }
+        
+        .message .icon {
+            margin-right: 0.8rem;
+            font-size: 1.3rem;
+        }
+        
+        /* 스크롤바 스타일링 */
+        .events-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .events-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        .events-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+        
+        .events-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>📅 노션 연동 계획표</h1>
+            <p>Netlify Functions로 구동되는 완전한 노션 연동 솔루션</p>
+        </div>
+
+        <div class="grid">
+            <!-- 일정 입력 폼 -->
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="icon">✨</span>
+                    새 일정 추가
+                </h2>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="icon">📝</span>
+                        제목 *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="title" 
+                        class="form-input" 
+                        placeholder="일정 제목을 입력하세요"
+                        maxlength="100"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="icon">📅</span>
+                        날짜 *
+                    </label>
+                    <input 
+                        type="date" 
+                        id="date" 
+                        class="form-input"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="icon">📍</span>
+                        장소
+                    </label>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        class="form-input" 
+                        placeholder="장소를 입력하세요"
+                        maxlength="100"
+                    >
+                </div>
+
+                <button id="saveBtn" class="btn">
+                    <span class="icon">💾</span>
+                    노션에 저장
+                </button>
+            </div>
+
+            <!-- 저장된 일정 목록 -->
+            <div class="card">
+                <div class="events-header">
+                    <h2 class="card-title">
+                        <span class="icon">📋</span>
+                        저장된 일정
+                    </h2>
+                    <button id="refreshBtn" class="refresh-btn">
+                        <span id="refreshIcon">🔄</span>
+                        새로고침
+                    </button>
+                </div>
+
+                <div id="eventsList" class="events-list">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>일정을 불러오는 중...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메시지 영역 -->
+    <div id="messageContainer"></div>
+
+    <script>
+        // 전역 변수
+        let events = [];
+        let isLoading = false;
+        let isLoadingEvents = false;
+
+        // DOM 요소
+        const titleInput = document.getElementById('title');
+        const dateInput = document.getElementById('date');
+        const locationInput = document.getElementById('location');
+        const saveBtn = document.getElementById('saveBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const eventsList = document.getElementById('eventsList');
+        const messageContainer = document.getElementById('messageContainer');
+
+        // 메시지 표시 함수
+        function showMessage(type, text) {
+            messageContainer.innerHTML = '';
+            
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            
+            const iconMap = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️'
+            };
+            
+            message.innerHTML = `
+                <span class="icon">${iconMap[type]}</span>
+                ${text}
+            `;
+            
+            messageContainer.appendChild(message);
+            
+            setTimeout(() => {
+                if (message.parentNode) {
+                    message.parentNode.removeChild(message);
+                }
+            }, 5000);
+        }
+
+        // 로딩 상태 업데이트
+        function updateSaveButton() {
+            if (isLoading) {
+                saveBtn.innerHTML = `
+                    <div class="spinner"></div>
+                    노션에 저장 중...
+                `;
+                saveBtn.disabled = true;
+            } else {
+                saveBtn.innerHTML = `
+                    <span class="icon">💾</span>
+                    노션에 저장
+                `;
+                saveBtn.disabled = false;
+            }
+        }
+
+        function updateRefreshButton() {
+            const refreshIcon = document.getElementById('refreshIcon');
+            if (isLoadingEvents) {
+                refreshIcon.innerHTML = '<div class="spinner" style="width: 16px; height: 16px; border-width: 2px; border-color: white; border-top-color: transparent;"></div>';
+            } else {
+                refreshIcon.textContent = '🔄';
+            }
+        }
+
+        // 일정 목록 렌더링
+        function renderEvents() {
+            if (isLoadingEvents) {
+                eventsList.innerHTML = `
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>노션에서 일정을 불러오는 중...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (events.length === 0) {
+                eventsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📅</div>
+                        <h3>저장된 일정이 없습니다</h3>
+                        <p>새 일정을 추가해보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // 날짜순으로 정렬
+            const sortedEvents = [...events].sort((a, b) => {
+                if (!a.date) return 1;
+                if (!b.date) return -1;
+                return new Date(a.date) - new Date(b.date);
+            });
+
+            eventsList.innerHTML = sortedEvents.map(event => `
+                <div class="event-card">
+                    <div class="event-title">${event.title}</div>
+                    <div class="event-details">
+                        ${event.date ? `
+                            <div class="event-detail">
+                                <span class="icon">📅</span>
+                                ${formatDate(event.date)}
+                            </div>
+                        ` : ''}
+                        ${event.location ? `
+                            <div class="event-detail">
+                                <span class="icon">📍</span>
+                                ${event.location}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 날짜 포맷팅
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'short'
+            };
+            return date.toLocaleDateString('ko-KR', options);
+        }
+
+        // 노션에서 일정 불러오기
+        async function loadEvents() {
+            isLoadingEvents = true;
+            updateRefreshButton();
+            renderEvents();
+            
+            try {
+                const response = await fetch('/.netlify/functions/get-events', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`서버 오류: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    events = data.events || [];
+                    
+                    if (events.length > 0) {
+                        showMessage('success', `${events.length}개의 일정을 불러왔습니다`);
+                    } else {
+                        showMessage('info', '저장된 일정이 없습니다');
+                    }
+                } else {
+                    throw new Error(data.error || '알 수 없는 오류');
+                }
+                
+            } catch (error) {
+                console.error('로딩 오류:', error);
+                showMessage('error', `일정 로딩 실패: ${error.message}`);
+                events = [];
+            } finally {
+                isLoadingEvents = false;
+                updateRefreshButton();
+                renderEvents();
+            }
+        }
+
+        // 노션에 일정 저장
+        async function saveToNotion() {
+            const title = titleInput.value.trim();
+            const date = dateInput.value;
+            const location = locationInput.value.trim();
+
+            if (!title || !date) {
+                showMessage('error', '제목과 날짜는 필수 입력 항목입니다');
+                return;
+            }
+
+            isLoading = true;
+            updateSaveButton();
+
+            try {
+                const response = await fetch('/.netlify/functions/save-event', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        date,
+                        location
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`서버 오류: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('success', '일정이 노션에 성공적으로 저장되었습니다! 🎉');
+                    
+                    // 폼 초기화
+                    titleInput.value = '';
+                    dateInput.value = '';
+                    locationInput.value = '';
+                    
+                    // 저장 후 일정 목록 새로고침
+                    setTimeout(() => {
+                        loadEvents();
+                    }, 1000);
+                } else {
+                    throw new Error(data.error || '저장 실패');
+                }
+            } catch (error) {
+                console.error('저장 오류:', error);
+                showMessage('error', `저장 실패: ${error.message}`);
+            } finally {
+                isLoading = false;
+                updateSaveButton();
+            }
+        }
+
+        // 이벤트 리스너 등록 및 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 오늘 날짜를 기본값으로 설정
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+            
+            // 이벤트 리스너 등록
+            saveBtn.addEventListener('click', saveToNotion);
+            refreshBtn.addEventListener('click', loadEvents);
+            
+            // Enter 키로 저장
+            titleInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    saveToNotion();
+                }
+            });
+            
+            locationInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    saveToNotion();
+                }
+            });
+            
+            // 페이지 로드 시 일정 불러오기
+            setTimeout(() => {
+                loadEvents();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
