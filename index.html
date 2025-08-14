@@ -19,7 +19,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
@@ -40,15 +40,33 @@
             opacity: 0.9;
         }
         
-        .grid {
+        .main-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
         }
         
-        @media (min-width: 1024px) {
-            .grid {
+        @media (min-width: 1200px) {
+            .main-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .left-panel {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .left-panel {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .left-panel {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -75,6 +93,126 @@
             font-size: 1.8rem;
         }
         
+        /* 달력 스타일 */
+        .calendar {
+            width: 100%;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0 0.5rem;
+        }
+        
+        .calendar-nav {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-nav:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .calendar-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .calendar-day-header {
+            background: #f7fafc;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
+        
+        .calendar-day {
+            background: white;
+            min-height: 120px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .calendar-day.other-month {
+            background: #f8f9fa;
+            color: #9ca3af;
+        }
+        
+        .calendar-day.today {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border: 2px solid #667eea;
+        }
+        
+        .calendar-day.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .day-events {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-height: 80px;
+            overflow: hidden;
+        }
+        
+        .day-event {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .day-event:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+        
+        .more-events {
+            font-size: 0.7rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        /* 폼 스타일 */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -110,13 +248,10 @@
         }
         
         .btn {
-            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             border: none;
             border-radius: 12px;
             font-weight: 600;
@@ -129,7 +264,6 @@
         
         .btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
         
         .btn:disabled {
@@ -141,6 +275,49 @@
         .btn .icon {
             margin-right: 0.5rem;
             font-size: 1.2rem;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-danger:hover {
+            box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
         }
         
         .spinner {
@@ -158,6 +335,7 @@
             to { transform: rotate(360deg); }
         }
         
+        /* 이벤트 목록 스타일 */
         .events-header {
             display: flex;
             justify-content: space-between;
@@ -215,11 +393,34 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
+        .event-card.editing {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+        
         .event-title {
             font-weight: 700;
             font-size: 1.2rem;
             color: #2d3748;
-            margin-bottom: 0.8rem;
+            flex: 1;
+        }
+        
+        .event-actions {
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .event-card:hover .event-actions {
+            opacity: 1;
         }
         
         .event-details {
@@ -305,6 +506,51 @@
             font-size: 1.3rem;
         }
         
+        /* 확인 다이얼로그 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-text {
+            color: #4a5568;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
         /* 스크롤바 스타일링 */
         .events-list::-webkit-scrollbar {
             width: 8px;
@@ -323,6 +569,23 @@
         .events-list::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
         }
+        
+        /* 반응형 개선 */
+        @media (max-width: 768px) {
+            .calendar-day {
+                min-height: 80px;
+                padding: 0.25rem;
+            }
+            
+            .day-events {
+                max-height: 50px;
+            }
+            
+            .day-event {
+                font-size: 0.7rem;
+                padding: 1px 4px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -330,64 +593,100 @@
         <!-- 헤더 -->
         <div class="header">
             <h1>📅 노션 연동 계획표</h1>
-            <p>Netlify Functions로 구동되는 완전한 노션 연동 솔루션</p>
+            <p>달력 뷰와 완전히 동기화되는 고급 일정 관리 시스템</p>
         </div>
 
-        <div class="grid">
-            <!-- 일정 입력 폼 -->
-            <div class="card">
-                <h2 class="card-title">
-                    <span class="icon">✨</span>
-                    새 일정 추가
-                </h2>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="icon">📝</span>
-                        제목 *
-                    </label>
-                    <input 
-                        type="text" 
-                        id="title" 
-                        class="form-input" 
-                        placeholder="일정 제목을 입력하세요"
-                        maxlength="100"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
+        <div class="main-grid">
+            <!-- 왼쪽 패널: 달력 + 폼 -->
+            <div class="left-panel">
+                <!-- 달력 -->
+                <div class="card">
+                    <h2 class="card-title">
                         <span class="icon">📅</span>
-                        날짜 *
-                    </label>
-                    <input 
-                        type="date" 
-                        id="date" 
-                        class="form-input"
-                    >
+                        달력
+                    </h2>
+                    
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button class="calendar-nav" id="prevMonth">◀</button>
+                            <div class="calendar-title" id="calendarTitle">2025년 1월</div>
+                            <button class="calendar-nav" id="nextMonth">▶</button>
+                        </div>
+                        
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- 달력이 여기에 동적으로 생성됩니다 -->
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="icon">📍</span>
-                        장소
-                    </label>
-                    <input 
-                        type="text" 
-                        id="location" 
-                        class="form-input" 
-                        placeholder="장소를 입력하세요"
-                        maxlength="100"
-                    >
-                </div>
+                <!-- 일정 입력 폼 -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <span class="icon">✨</span>
+                        <span id="formTitle">새 일정 추가</span>
+                    </h2>
 
-                <button id="saveBtn" class="btn">
-                    <span class="icon">💾</span>
-                    노션에 저장
-                </button>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="icon">📝</span>
+                            제목 *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="title" 
+                            class="form-input" 
+                            placeholder="일정 제목을 입력하세요"
+                            maxlength="100"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="icon">📅</span>
+                            날짜 *
+                        </label>
+                        <input 
+                            type="date" 
+                            id="date" 
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="icon">📍</span>
+                            장소
+                        </label>
+                        <input 
+                            type="text" 
+                            id="location" 
+                            class="form-input" 
+                            placeholder="장소를 입력하세요"
+                            maxlength="100"
+                        >
+                    </div>
+
+                    <button id="saveBtn" class="btn btn-primary">
+                        <span class="icon">💾</span>
+                        노션에 저장
+                    </button>
+                    
+                    <div id="editActions" style="display: none;">
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <button id="updateBtn" class="btn btn-success" style="flex: 1;">
+                                <span class="icon">✅</span>
+                                수정 완료
+                            </button>
+                            <button id="cancelBtn" class="btn btn-secondary" style="flex: 1;">
+                                <span class="icon">❌</span>
+                                취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- 저장된 일정 목록 -->
+            <!-- 오른쪽 패널: 일정 목록 -->
             <div class="card">
                 <div class="events-header">
                     <h2 class="card-title">
@@ -410,6 +709,18 @@
         </div>
     </div>
 
+    <!-- 삭제 확인 모달 -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">🗑️ 일정 삭제</div>
+            <div class="modal-text">정말로 이 일정을 삭제하시겠습니까?<br>삭제된 일정은 복구할 수 없습니다.</div>
+            <div class="modal-actions">
+                <button id="confirmDelete" class="btn btn-danger">삭제</button>
+                <button id="cancelDelete" class="btn btn-secondary">취소</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 메시지 영역 -->
     <div id="messageContainer"></div>
 
@@ -418,15 +729,169 @@
         let events = [];
         let isLoading = false;
         let isLoadingEvents = false;
+        let editingEventId = null;
+        let deletingEventId = null;
+        let currentDate = new Date();
+        let selectedDate = null;
 
         // DOM 요소
         const titleInput = document.getElementById('title');
         const dateInput = document.getElementById('date');
         const locationInput = document.getElementById('location');
         const saveBtn = document.getElementById('saveBtn');
+        const updateBtn = document.getElementById('updateBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const editActions = document.getElementById('editActions');
+        const formTitle = document.getElementById('formTitle');
         const refreshBtn = document.getElementById('refreshBtn');
         const eventsList = document.getElementById('eventsList');
         const messageContainer = document.getElementById('messageContainer');
+        const deleteModal = document.getElementById('deleteModal');
+        const confirmDeleteBtn = document.getElementById('confirmDelete');
+        const cancelDeleteBtn = document.getElementById('cancelDelete');
+        
+        // 달력 요소
+        const calendarTitle = document.getElementById('calendarTitle');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+
+        // 달력 관련 함수들
+        function formatDateForCalendar(date) {
+            return date.getFullYear() + '-' + 
+                   String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                   String(date.getDate()).padStart(2, '0');
+        }
+
+        function isSameDay(date1, date2) {
+            return date1.getFullYear() === date2.getFullYear() &&
+                   date1.getMonth() === date2.getMonth() &&
+                   date1.getDate() === date2.getDate();
+        }
+
+        function getEventsForDate(dateStr) {
+            return events.filter(event => event.date === dateStr);
+        }
+
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            // 달력 제목 업데이트
+            calendarTitle.textContent = `${year}년 ${month + 1}월`;
+            
+            // 첫 번째 날과 마지막 날
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const firstDayOfWeek = firstDay.getDay();
+            
+            // 달력 그리드 초기화
+            calendarGrid.innerHTML = '';
+            
+            // 요일 헤더 추가
+            const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+            weekdays.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendarGrid.appendChild(header);
+            });
+            
+            // 이전 달의 마지막 날들
+            const prevMonth = new Date(year, month - 1, 0);
+            for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+                const date = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - i);
+                createCalendarDay(date, true);
+            }
+            
+            // 현재 달의 날들
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(year, month, day);
+                createCalendarDay(date, false);
+            }
+            
+            // 다음 달의 첫 날들 (42칸 채우기)
+            const totalCells = calendarGrid.children.length - 7; // 헤더 제외
+            const remainingCells = 42 - totalCells;
+            for (let day = 1; day <= remainingCells; day++) {
+                const date = new Date(year, month + 1, day);
+                createCalendarDay(date, true);
+            }
+        }
+
+        function createCalendarDay(date, isOtherMonth) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day';
+            
+            if (isOtherMonth) {
+                dayElement.classList.add('other-month');
+            }
+            
+            // 오늘 날짜 표시
+            if (isSameDay(date, new Date())) {
+                dayElement.classList.add('today');
+            }
+            
+            // 선택된 날짜 표시
+            if (selectedDate && isSameDay(date, selectedDate)) {
+                dayElement.classList.add('selected');
+            }
+            
+            const dateStr = formatDateForCalendar(date);
+            dayElement.setAttribute('data-date', dateStr);
+            
+            // 날짜 번호
+            const dayNumber = document.createElement('div');
+            dayNumber.className = 'day-number';
+            dayNumber.textContent = date.getDate();
+            dayElement.appendChild(dayNumber);
+            
+            // 해당 날짜의 이벤트들
+            const dayEvents = getEventsForDate(dateStr);
+            const eventsContainer = document.createElement('div');
+            eventsContainer.className = 'day-events';
+            
+            const maxVisible = 3; // 최대 표시할 이벤트 수
+            dayEvents.slice(0, maxVisible).forEach(event => {
+                const eventElement = document.createElement('div');
+                eventElement.className = 'day-event';
+                eventElement.textContent = event.location || event.title;
+                eventElement.title = `${event.title} - ${event.location}`;
+                eventElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    startEdit(event.id);
+                });
+                eventsContainer.appendChild(eventElement);
+            });
+            
+            // 더 많은 이벤트가 있으면 표시
+            if (dayEvents.length > maxVisible) {
+                const moreElement = document.createElement('div');
+                moreElement.className = 'more-events';
+                moreElement.textContent = `+${dayEvents.length - maxVisible}개 더`;
+                eventsContainer.appendChild(moreElement);
+            }
+            
+            dayElement.appendChild(eventsContainer);
+            
+            // 날짜 클릭 이벤트
+            dayElement.addEventListener('click', () => {
+                selectDate(date);
+            });
+            
+            calendarGrid.appendChild(dayElement);
+        }
+
+        function selectDate(date) {
+            selectedDate = date;
+            const dateStr = formatDateForCalendar(date);
+            dateInput.value = dateStr;
+            renderCalendar(); // 선택 상태 업데이트
+        }
+
+        function updateCalendar() {
+            renderCalendar();
+        }
 
         // 메시지 표시 함수
         function showMessage(type, text) {
@@ -453,6 +918,51 @@
                     message.parentNode.removeChild(message);
                 }
             }, 5000);
+        }
+
+        // 폼 초기화
+        function resetForm() {
+            titleInput.value = '';
+            dateInput.value = '';
+            locationInput.value = '';
+            editingEventId = null;
+            selectedDate = null;
+            
+            formTitle.textContent = '새 일정 추가';
+            saveBtn.style.display = 'flex';
+            editActions.style.display = 'none';
+            
+            renderCalendar(); // 선택 상태 해제
+        }
+
+        // 편집 모드 활성화
+        function startEdit(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (!event) return;
+
+            editingEventId = eventId;
+            titleInput.value = event.title;
+            dateInput.value = event.date;
+            locationInput.value = event.location;
+            
+            // 선택된 날짜 설정
+            if (event.date) {
+                selectedDate = new Date(event.date);
+                renderCalendar();
+            }
+            
+            formTitle.textContent = '일정 수정';
+            saveBtn.style.display = 'none';
+            editActions.style.display = 'block';
+            
+            // 스크롤을 폼으로 이동
+            document.querySelector('.card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 삭제 확인
+        function confirmDelete(eventId) {
+            deletingEventId = eventId;
+            deleteModal.classList.add('active');
         }
 
         // 로딩 상태 업데이트
@@ -512,8 +1022,20 @@
             });
 
             eventsList.innerHTML = sortedEvents.map(event => `
-                <div class="event-card">
-                    <div class="event-title">${event.title}</div>
+                <div class="event-card" data-id="${event.id}">
+                    <div class="event-header">
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-actions">
+                            <button class="btn btn-secondary" onclick="startEdit('${event.id}')">
+                                <span class="icon">✏️</span>
+                                수정
+                            </button>
+                            <button class="btn btn-danger" onclick="confirmDelete('${event.id}')">
+                                <span class="icon">🗑️</span>
+                                삭제
+                            </button>
+                        </div>
+                    </div>
                     <div class="event-details">
                         ${event.date ? `
                             <div class="event-detail">
@@ -585,6 +1107,7 @@
                 isLoadingEvents = false;
                 updateRefreshButton();
                 renderEvents();
+                updateCalendar(); // 달력도 업데이트
             }
         }
 
@@ -623,13 +1146,7 @@
                 
                 if (data.success) {
                     showMessage('success', '일정이 노션에 성공적으로 저장되었습니다! 🎉');
-                    
-                    // 폼 초기화
-                    titleInput.value = '';
-                    dateInput.value = '';
-                    locationInput.value = '';
-                    
-                    // 저장 후 일정 목록 새로고침
+                    resetForm();
                     setTimeout(() => {
                         loadEvents();
                     }, 1000);
@@ -645,26 +1162,183 @@
             }
         }
 
+        // 일정 수정
+        async function updateEvent() {
+            if (!editingEventId) return;
+
+            const title = titleInput.value.trim();
+            const date = dateInput.value;
+            const location = locationInput.value.trim();
+
+            if (!title || !date) {
+                showMessage('error', '제목과 날짜는 필수 입력 항목입니다');
+                return;
+            }
+
+            try {
+                const response = await fetch('/.netlify/functions/update-event', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        eventId: editingEventId,
+                        title,
+                        date,
+                        location
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`서버 오류: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('success', '일정이 성공적으로 수정되었습니다! ✅');
+                    resetForm();
+                    setTimeout(() => {
+                        loadEvents();
+                    }, 1000);
+                } else {
+                    throw new Error(data.error || '수정 실패');
+                }
+            } catch (error) {
+                console.error('수정 오류:', error);
+                showMessage('error', `수정 실패: ${error.message}`);
+            }
+        }
+
+        // 일정 삭제
+        async function deleteEvent() {
+            if (!deletingEventId) return;
+
+            try {
+                const response = await fetch('/.netlify/functions/delete-event', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        eventId: deletingEventId
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`서버 오류: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('success', '일정이 성공적으로 삭제되었습니다! 🗑️');
+                    deleteModal.classList.remove('active');
+                    
+                    // 삭제된 일정이 편집 중이었다면 폼 초기화
+                    if (editingEventId === deletingEventId) {
+                        resetForm();
+                    }
+                    
+                    deletingEventId = null;
+                    
+                    setTimeout(() => {
+                        loadEvents();
+                    }, 1000);
+                } else {
+                    throw new Error(data.error || '삭제 실패');
+                }
+            } catch (error) {
+                console.error('삭제 오류:', error);
+                showMessage('error', `삭제 실패: ${error.message}`);
+                deleteModal.classList.remove('active');
+                deletingEventId = null;
+            }
+        }
+
         // 이벤트 리스너 등록 및 초기화
         document.addEventListener('DOMContentLoaded', function() {
             // 오늘 날짜를 기본값으로 설정
             const today = new Date().toISOString().split('T')[0];
             dateInput.value = today;
+            selectedDate = new Date();
+            
+            // 달력 초기 렌더링
+            renderCalendar();
             
             // 이벤트 리스너 등록
             saveBtn.addEventListener('click', saveToNotion);
+            updateBtn.addEventListener('click', updateEvent);
+            cancelBtn.addEventListener('click', resetForm);
             refreshBtn.addEventListener('click', loadEvents);
+            
+            // 달력 네비게이션
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+            
+            // 날짜 입력 변경 시 달력 선택 상태 업데이트
+            dateInput.addEventListener('change', () => {
+                if (dateInput.value) {
+                    selectedDate = new Date(dateInput.value);
+                    
+                    // 선택한 날짜의 월로 달력 이동
+                    currentDate = new Date(selectedDate);
+                    renderCalendar();
+                }
+            });
+            
+            // 삭제 모달 이벤트
+            confirmDeleteBtn.addEventListener('click', deleteEvent);
+            cancelDeleteBtn.addEventListener('click', () => {
+                deleteModal.classList.remove('active');
+                deletingEventId = null;
+            });
+            
+            // 모달 배경 클릭시 닫기
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) {
+                    deleteModal.classList.remove('active');
+                    deletingEventId = null;
+                }
+            });
             
             // Enter 키로 저장
             titleInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    saveToNotion();
+                    if (editingEventId) {
+                        updateEvent();
+                    } else {
+                        saveToNotion();
+                    }
                 }
             });
             
             locationInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    saveToNotion();
+                    if (editingEventId) {
+                        updateEvent();
+                    } else {
+                        saveToNotion();
+                    }
+                }
+            });
+            
+            // ESC 키로 편집 취소
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (deleteModal.classList.contains('active')) {
+                        deleteModal.classList.remove('active');
+                        deletingEventId = null;
+                    } else if (editingEventId) {
+                        resetForm();
+                    }
                 }
             });
             
